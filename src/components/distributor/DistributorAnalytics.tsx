@@ -103,7 +103,7 @@ export default function DistributorAnalytics() {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Avg Order Value:</span>
                   <span className="font-medium">
-                    ₹{trend.avgOrderValue.toFixed(2)}
+                    ₹{trend.averageOrderValue.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center pt-2">
