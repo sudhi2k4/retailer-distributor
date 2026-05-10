@@ -182,4 +182,4 @@ NEXT_PUBLIC_API_URL=http://localhost:3000
 
 - Clear `.next` folder and reinstall: `rm -rf .next && npm install`
 - Check Node.js version: Requires Node.js 18+
-- Ensure ports 3000 is available
+- Ensure ports 3000 is available test
