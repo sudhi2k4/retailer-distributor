@@ -1,0 +1,111 @@
+generator client {
+  output   = "../src/lib/prisma"
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum UserRole {
+  RETAILER
+  DISTRIBUTOR
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum DemandTrend {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum AlertSeverity {
+  CRITICAL
+  WARNING
+  INFO
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders    Order[]
+  inventory Inventory[]
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  category    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems OrderItem[]
+  inventory  Inventory[]
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  orderNumber     String      @unique
+  retailerId      Int
+  retailer        User        @relation(fields: [retailerId], references: [id])
+  status          OrderStatus @default(PENDING)
+  totalAmount     Float
+  deliveryAddress String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  items OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+
+  @@unique([orderId, productId])
+}
+
+model Inventory {
+  id           Int      @id @default(autoincrement())
+  retailerId   Int
+  retailer     User     @relation(fields: [retailerId], references: [id])
+  productId    Int
+  product      Product  @relation(fields: [productId], references: [id])
+  currentStock Int
+  reorderLevel Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([retailerId, productId])
+}
+
+model AnalyticsData {
+  id            Int         @id @default(autoincrement())
+  productId     Int
+  demandTrend   DemandTrend
+  totalOrders   Int
+  totalQuantity Int
+  avgOrderValue Float
+  lastOrderDate DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
