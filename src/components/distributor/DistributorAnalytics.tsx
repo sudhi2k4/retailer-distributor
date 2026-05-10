@@ -171,11 +171,11 @@ export default function DistributorAnalytics() {
                       ₹{retailer.totalOrderValue.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      ₹{retailer.avgOrderValue.toFixed(2)}
+                      ₹{retailer.averageOrderValue.toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      {retailer.lowStockItems} /{' '}
-                      {retailer.totalItems}
+                      {retailer.totalOrderValue} /{' '}
+                      {retailer.totalOrders}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                       {new Date(retailer.lastOrderDate).toLocaleDateString()}
